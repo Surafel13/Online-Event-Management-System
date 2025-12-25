@@ -40,5 +40,17 @@ public class EventDAO {
         return events;
     }
 }
-
+    public boolean updateEvent(Event event) throws SQLException {
+        String sql = "UPDATE events SET title=?, date=?, time=?, location=?, capacity=? WHERE id=?";
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, event.getTitle());
+            stmt.setDate(2, event.getDate());
+            stmt.setTime(3, event.getTime());
+            stmt.setString(4, event.getLocation());
+            stmt.setInt(5, event.getCapacity());
+            stmt.setInt(6, event.getId());
+            return stmt.executeUpdate() > 0;
+        }
+    }
 
