@@ -20,5 +20,25 @@ public class EventDAO {
             return stmt.executeUpdate() > 0;
         }
     }
+
+    public List<Event> getAllEvents() throws SQLException {
+        List<Event> events = new ArrayList<>();
+        String sql = "SELECT * FROM events";
+        try (Connection conn = DBUtils.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                events.add(new Event(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getDate("date"),
+                        rs.getTime("time"),
+                        rs.getString("location"),
+                        rs.getInt("capacity")));
+            }
+        }
+        return events;
+    }
 }
+
 
