@@ -72,4 +72,11 @@ public class EventDAO {
         }
         return null;
     }
-
+  public boolean deleteEvent(int id) throws SQLException {
+        String sql = "DELETE FROM events WHERE id=?";
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        }
+    }
