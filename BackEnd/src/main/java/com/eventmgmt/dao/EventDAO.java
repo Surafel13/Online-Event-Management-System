@@ -7,4 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDAO {
+
+    public boolean createEvent(Event event) throws SQLException {
+        String sql = "INSERT INTO events (title, date, time, location, capacity) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, event.getTitle());
+            stmt.setDate(2, event.getDate());
+            stmt.setTime(3, event.getTime());
+            stmt.setString(4, event.getLocation());
+            stmt.setInt(5, event.getCapacity());
+            return stmt.executeUpdate() > 0;
+        }
+    }
 }
+
