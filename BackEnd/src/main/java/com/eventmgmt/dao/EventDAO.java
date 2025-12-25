@@ -80,3 +80,11 @@ public class EventDAO {
             return stmt.executeUpdate() > 0;
         }
     }
+public boolean reduceCapacity(int eventId) throws SQLException {
+    String sql = "UPDATE events SET capacity = capacity - 1 WHERE id = ? AND capacity > 0";
+    try (Connection conn = DBUtils.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, eventId);
+        return stmt.executeUpdate() > 0;
+    }
+}
