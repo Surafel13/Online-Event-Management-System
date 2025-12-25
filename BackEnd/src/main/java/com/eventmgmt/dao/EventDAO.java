@@ -53,4 +53,23 @@ public class EventDAO {
             return stmt.executeUpdate() > 0;
         }
     }
+    public Event getEventById(int id) throws SQLException {
+        String sql = "SELECT * FROM events WHERE id=?";
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Event(
+                            rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getDate("date"),
+                            rs.getTime("time"),
+                            rs.getString("location"),
+                            rs.getInt("capacity"));
+                }
+            }
+        }
+        return null;
+    }
 
