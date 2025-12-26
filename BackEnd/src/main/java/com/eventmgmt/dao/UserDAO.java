@@ -16,7 +16,7 @@ public class UserDAO {
             stmt.setString(4, user.getRole());
             return stmt.executeUpdate() > 0;
         }
-    }}
+    }
     public User login(String email, String password) throws SQLException {
     String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
     try (Connection conn = DBUtils.getConnection();
@@ -36,4 +36,22 @@ public class UserDAO {
     }
     return null;
 }
-}
+
+public List<User> getAllUsers() throws SQLException {
+    List<User> users = new ArrayList<>();
+    String sql = "SELECT * FROM users WHERE role = 'USER'";
+    try (Connection conn = DBUtils.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+        while (rs.next()) {
+            users.add(new User(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    null,
+                    rs.getString("role")));
+        }
+    }
+    return users;}
+        
+    
