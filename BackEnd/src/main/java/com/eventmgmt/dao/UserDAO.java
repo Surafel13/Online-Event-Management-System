@@ -53,5 +53,24 @@ public List<User> getAllUsers() throws SQLException {
         }
     }
     return users;}
+    public User getUserById(int id) throws SQLException {
+    String sql = "SELECT * FROM users WHERE id = ?";
+    try (Connection conn = DBUtils.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, id);
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        null,
+                        rs.getString("role"));
+            }
+        }
+    }
+    return null;
+}
+}
         
     
