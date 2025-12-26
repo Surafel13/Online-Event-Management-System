@@ -1,6 +1,3 @@
-
-// this is event model code
-
 package com.eventmgmt.models;
 
 import java.sql.Date;
@@ -13,29 +10,73 @@ public class Event {
     private Time time;
     private String location;
     private int capacity;
+    private int registeredCount;
 
-    public Event() {}
-this.date = date;
+    public Event() {
+    }
+
+    public Event(int id, String title, Date date, Time time, String location, int capacity) {
+        this.id = id;
+        this.title = title;
+        this.date = date;
         this.time = time;
         this.location = location;
         this.capacity = capacity;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date = date; }
+    public String getTitle() {
+        return title;
+    }
 
-    public Time getTime() { return time; }
-    public void setTime(Time time) { this.time = time; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
+    public Date getDate() {
+        return date;
+    }
 
-    public int getCapacity() { return capacity; }
-    public void setCapacity(int capacity) { this.capacity = capacity; }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getRegisteredCount() {
+        return registeredCount;
+    }
+
+    public void setRegisteredCount(int registeredCount) {
+        this.registeredCount = registeredCount;
+    }
 }
