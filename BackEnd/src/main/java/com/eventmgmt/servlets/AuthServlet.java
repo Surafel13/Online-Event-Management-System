@@ -18,23 +18,39 @@ public class AuthServlet extends HttpServlet {
     private Gson gson = new Gson();
     
     @Override
-protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-    String pathInfo = req.getPathInfo();
-    resp.setContentType("application/json");
-    PrintWriter out = resp.getWriter();
+        String pathInfo = req.getPathInfo();
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
 
-    if ("/check".equals(pathInfo)) {
-        HttpSession session = req.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            out.print("{\"role\": \"" + user.getRole() + "\"}");
-        } else {
-            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            out.print("{\"error\": \"Not logged in\"}");
+        if ("/check".equals(pathInfo)) {
+            HttpSession session = req.getSession(false);
+            if (session != null && session.getAttribute("user") != null) {
+                User user = (User) session.getAttribute("user");
+                out.print("{\"role\": \"" + user.getRole() + "\"}");
+            } else {
+                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                out.print("{\"error\": \"Not logged in\"}");
+            }
         }
     }
-}
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String pathInfo = req.getPathInfo();
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
+
+        if ("/register".equals(pathInfo)) {
+            // register logic will be added next
+        } else if ("/login".equals(pathInfo)) {
+            // login logic will be added later
+        } else if ("/logout".equals(pathInfo)) {
+            // logout logic will be added later
+        }
+    }
 
 }
