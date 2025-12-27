@@ -44,8 +44,50 @@ public class AuthServlet extends HttpServlet {
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
 
-        if ("/register".equals(pathInfo)) {
-            // register logic will be added next
+    if ("/register".equals(pathInfo)) {
+
+        User user;
+        String contentType = req.getContentType();
+
+        if (contentType != null && contentType.contains("application/json")) {
+            user = gson.fromJson(req.getReader(), User.class);
+            if (user.getRole() == null)
+                user.setRole("USER");
+        } else {
+            String name = req.getParameter("name");
+            String email = req.getParameter("email");
+            String password = req.getParameter("password");
+            String role = req.getParameter("role");
+            if (role == null)
+                role = "USER";
+            user = new User(0, name, email, password, role);
+        }
+
+        try {
+            if (user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"error\": \"Name, email, and password are required\"}");
+                return;
+            }
+
+            if (userDAO.registerUser(user)) {
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                out.print("{\"message\": \"User registered successfully\"}");
+            } else {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"error\": \"Registration failed\"}");
+            }
+        } catch (SQLException e) {
+            resp.setStatus(HttpServletResponse.SC_CONFLICT);
+            out.print("{\"error\": \"Email already exists or database error: " + e.getMessage() + "\"}");
+        }
+
+    } else if ("/login".equals(pathInfo)) {
+        // login logic will be added later
+    } else if ("/logout".equals(pathInfo)) {
+        // logout logic will be added later
+    }
+
         } else if ("/login".equals(pathInfo)) {
             // login logic will be added later
         } else if ("/logout".equals(pathInfo)) {
