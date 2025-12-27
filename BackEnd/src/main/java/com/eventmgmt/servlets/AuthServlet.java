@@ -16,5 +16,25 @@ public class AuthServlet extends HttpServlet {
 
     private UserDAO userDAO = new UserDAO();
     private Gson gson = new Gson();
+    
+    @Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+    String pathInfo = req.getPathInfo();
+    resp.setContentType("application/json");
+    PrintWriter out = resp.getWriter();
+
+    if ("/check".equals(pathInfo)) {
+        HttpSession session = req.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            out.print("{\"role\": \"" + user.getRole() + "\"}");
+        } else {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.print("{\"error\": \"Not logged in\"}");
+        }
+    }
+}
 
 }
