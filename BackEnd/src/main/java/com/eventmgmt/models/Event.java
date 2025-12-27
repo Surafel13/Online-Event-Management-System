@@ -1,3 +1,6 @@
+
+// this is event model code
+
 package com.eventmgmt.models;
 
 import java.sql.Date;
