@@ -82,8 +82,41 @@ public class AuthServlet extends HttpServlet {
             out.print("{\"error\": \"Email already exists or database error: " + e.getMessage() + "\"}");
         }
 
-    } else if ("/login".equals(pathInfo)) {
-        // login logic will be added later
+        } else if ("/login".equals(pathInfo)) {
+
+            String email, password;
+            String contentType = req.getContentType();
+
+            if (contentType != null && contentType.contains("application/json")) {
+                User loginData = gson.fromJson(req.getReader(), User.class);
+                email = loginData.getEmail();
+                password = loginData.getPassword();
+            } else {
+                email = req.getParameter("email");
+                password = req.getParameter("password");
+            }
+
+            try {
+                if (email == null || password == null) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    out.print("{\"error\": \"Email and password are required\"}");
+                    return;
+                }
+
+                User user = userDAO.login(email, password);
+                if (user != null) {
+                    HttpSession session = req.getSession();
+                    session.setAttribute("user", user);
+                    out.print("{\"message\": \"Login successful\", \"role\": \"" + user.getRole() + "\"}");
+                } else {
+                    resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    out.print("{\"error\": \"Invalid email or password\"}");
+                }
+            } catch (SQLException e) {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.print("{\"error\": \"Database error: " + e.getMessage() + "\"}");
+            }
+
     } else if ("/logout".equals(pathInfo)) {
         // logout logic will be added later
     }
