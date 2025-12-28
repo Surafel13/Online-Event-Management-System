@@ -42,4 +42,8 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws Se
         }
         out.print(gson.toJson(tickets));
 
-}
+    } catch (SQLException e) {
+        resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        out.print("{\"error\": \"Database error: " + e.getMessage() + "\"}");
+    
+
