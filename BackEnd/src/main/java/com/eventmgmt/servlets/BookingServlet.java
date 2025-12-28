@@ -21,4 +21,25 @@ public class BookingServlet extends HttpServlet {
 private EventDAO eventDAO = new EventDAO();
 private Gson gson = new Gson();
 
+@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    HttpSession session = req.getSession(false);
+    if (session == null || session.getAttribute("user") == null) {
+        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
+
+    User user = (User) session.getAttribute("user");
+    resp.setContentType("application/json");
+    PrintWriter out = resp.getWriter();
+
+    try {
+        Object tickets;
+        if ("ADMIN".equals(user.getRole())) {
+            tickets = ticketDAO.getAllDetailedTickets();
+        } else {
+            tickets = ticketDAO.getDetailedTicketsByUserId(user.getId());
+        }
+        out.print(gson.toJson(tickets));
+
 }
