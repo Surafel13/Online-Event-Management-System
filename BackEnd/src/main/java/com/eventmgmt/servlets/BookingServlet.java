@@ -13,3 +13,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.UUID;
+
+@WebServlet({ "/api/bookings", "/api/bookings/*" })
+public class BookingServlet extends HttpServlet {}
