@@ -45,5 +45,63 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws Se
     } catch (SQLException e) {
         resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         out.print("{\"error\": \"Database error: " + e.getMessage() + "\"}");
-    
+    }
+}
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        User user = (User) session.getAttribute("user");
+        String eventIdStr = req.getParameter("eventId");
+        if (eventIdStr == null || eventIdStr.isEmpty()) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().print("{\"error\": \"Missing eventId\"}");
+            return;
+        }
+        int eventId = Integer.parseInt(eventIdStr);
+
+        try {
+            if (ticketDAO.hasUserBookedEvent(user.getId(), eventId)) {
+                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.getWriter().print("{\"error\": \"You have already booked this event\"}");
+                return;
+            }
+
+            Event event = eventDAO.getEventById(eventId);
+            if (event == null) {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().print("{\"error\": \"Event not found\"}");
+                return;
+            }
+
+            if (event.getCapacity() <= 0) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().print("{\"error\": \"Event is full\"}");
+                return;
+            }
+
+            if (eventDAO.reduceCapacity(eventId)) {
+                String ticketId = "TKT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+                Ticket ticket = new Ticket(ticketId, user.getId(), eventId, null, "BOOKED");
+                if (ticketDAO.bookTicket(ticket)) {
+                    resp.setStatus(HttpServletResponse.SC_CREATED);
+                    resp.getWriter()
+                            .print("{\"message\": \"Ticket booked successfully\", \"ticketId\": \"" + ticketId + "\"}");
+                } else {
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+            } else {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().print("{\"error\": \"Could not book ticket\"}");
+            }
+        } catch (SQLException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+}
+
 
