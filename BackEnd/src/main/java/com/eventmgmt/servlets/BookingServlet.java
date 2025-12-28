@@ -15,4 +15,10 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 @WebServlet({ "/api/bookings", "/api/bookings/*" })
-public class BookingServlet extends HttpServlet {}
+public class BookingServlet extends HttpServlet {
+    private TicketDAO ticketDAO = new TicketDAO();
+
+private EventDAO eventDAO = new EventDAO();
+private Gson gson = new Gson();
+
+}
