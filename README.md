@@ -1,5 +1,4 @@
 # Online Event Management and Ticket Generation System
-
 A backend-only Java Servlet and JDBC based system for managing events and tickets.
 
 ## Pratt-requisites
