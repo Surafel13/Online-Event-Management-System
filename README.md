@@ -37,3 +37,8 @@ A backend-only Java Servlet and JDBC based system for managing events and ticket
   - *Requires ADMIN session cookie.*
 - **Update Event (Admin)**: `PUT /api/events/{id}`
 - **Delete Event (Admin)**: `DELETE /api/events/{id}`
+### 3. Booking & Users
+- **View Bookings**: `GET /api/bookings` (User see theirs, Admin see all)
+- **Book Ticket**: `POST /api/bookings`
+  - Body: `eventId`
+- **View Users (Admin)**: `GET /api/admin/users`- 
