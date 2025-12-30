@@ -41,4 +41,8 @@ A backend-only Java Servlet and JDBC based system for managing events and ticket
 - **View Bookings**: `GET /api/bookings` (User see theirs, Admin see all)
 - **Book Ticket**: `POST /api/bookings`
   - Body: `eventId`
-- **View Users (Admin)**: `GET /api/admin/users`- 
+- **View Users (Admin)**: `GET /api/admin/users`
+  ### Testing with Postman
+1.  **Login first** to get the `JSESSIONID` cookie.
+2.  Postman automatically manages cookies if you use the desktop version.
+3.  For Admin APIs, ensure your user role is `ADMIN` in the database.
