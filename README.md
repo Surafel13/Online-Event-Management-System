@@ -20,3 +20,13 @@ A backend-only Java Servlet and JDBC based system for managing events and ticket
 3.  **Deployment**:
     - Compile the Java files into classes.
     - Package the project as a `.war` file or deploy the `webapp` folder to Tomcat.
+      ## API Documentation (Test using Postman)
+
+**Note**: All POST/PUT APIs now support both `x-www-form-urlencoded` and `application/json` Content-Types.
+
+### 1. Authentication
+- **Register**: `POST /api/auth/register`
+  - Body: `name`, `email`, `password`, `role` (ADMIN or USER)
+- **Login**: `POST /api/auth/login`
+  - Body: `email`, `password`
+- **Logout**: `POST /api/auth/logout`
