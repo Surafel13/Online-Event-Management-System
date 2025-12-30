@@ -30,3 +30,10 @@ A backend-only Java Servlet and JDBC based system for managing events and ticket
 - **Login**: `POST /api/auth/login`
   - Body: `email`, `password`
 - **Logout**: `POST /api/auth/logout`
+### 2. Event Management
+- **List Events**: `GET /api/events`
+- **Create Event (Admin)**: `POST /api/events`
+  - Body: `title`, `date` (YYYY-MM-DD), `time` (HH:mm), `location`, `capacity`
+  - *Requires ADMIN session cookie.*
+- **Update Event (Admin)**: `PUT /api/events/{id}`
+- **Delete Event (Admin)**: `DELETE /api/events/{id}`
