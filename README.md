@@ -1,5 +1,5 @@
 # Online Event Management and Ticket Generation System
-A backend-only Java Servlet and JDBC based system for managing events and tickets.
+A Full stack application with backend Java Servlet and JDBC based system for managing events and tickets.
 
 ## Pratt-requisites
 - Apache Tomcat (v9+)
