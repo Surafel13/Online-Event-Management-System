@@ -17,36 +17,35 @@ import java.util.UUID;
 @WebServlet({ "/api/bookings", "/api/bookings/*" })
 public class BookingServlet extends HttpServlet {
     private TicketDAO ticketDAO = new TicketDAO();
+    private EventDAO eventDAO = new EventDAO();
+    private Gson gson = new Gson();
 
-private EventDAO eventDAO = new EventDAO();
-private Gson gson = new Gson();
-
-@Override
-protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    HttpSession session = req.getSession(false);
-    if (session == null || session.getAttribute("user") == null) {
-        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        return;
-    }
-
-    User user = (User) session.getAttribute("user");
-    resp.setContentType("application/json");
-    PrintWriter out = resp.getWriter();
-
-    try {
-        Object tickets;
-        if ("ADMIN".equals(user.getRole())) {
-            tickets = ticketDAO.getAllDetailedTickets();
-        } else {
-            tickets = ticketDAO.getDetailedTicketsByUserId(user.getId());
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
-        out.print(gson.toJson(tickets));
 
-    } catch (SQLException e) {
-        resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        out.print("{\"error\": \"Database error: " + e.getMessage() + "\"}");
+        User user = (User) session.getAttribute("user");
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
+
+        try {
+            Object tickets;
+            if ("ADMIN".equals(user.getRole())) {
+                tickets = ticketDAO.getAllDetailedTickets();
+            } else {
+                tickets = ticketDAO.getDetailedTicketsByUserId(user.getId());
+            }
+            out.print(gson.toJson(tickets));
+        } catch (SQLException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"error\": \"Database error: " + e.getMessage() + "\"}");
+        }
     }
-}
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
@@ -103,5 +102,3 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws Se
         }
     }
 }
-
-
