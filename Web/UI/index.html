@@ -70,3 +70,74 @@
                 </form>
             </div>
         </section>
+        <!-- Register View -->
+        <section id="registerView" class="view">
+            <div class="auth-card">
+                <h2>Create Account</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" required placeholder="name@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" required placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select name="role">
+                            <option value="USER">Attendee</option>
+                            <option value="ADMIN">Organizer (Admin)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-large">Register Now</button>
+                    <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                        Already have an account? <a href="#" onclick="showView('loginView')"
+                            style="color: var(--primary);">Login here</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Admin View -->
+        <section id="adminView" class="view">
+            <div class="admin-header">
+                <h1>Platform Control</h1>
+                <button class="btn-primary" onclick="openCreateModal()">New Event</button>
+            </div>
+            <div class="table-container">
+                <h2 style="margin: 2rem 0 1rem 0;">Recent Bookings</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ticket ID</th>
+                            <th>User Details</th>
+                            <th>Event Title</th>
+                            <th>Booking Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <h2 style="margin: 2rem 0 1rem 0;">Event Statistics</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event Title</th>
+                            <th>Registered Users</th>
+                            <th>Available Seats</th>
+                            <th>Total Capacity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminStatsBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
