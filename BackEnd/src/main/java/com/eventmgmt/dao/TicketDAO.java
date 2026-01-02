@@ -107,4 +107,19 @@ public class TicketDAO {
         }
         return tickets;
     }
+
+    public boolean hasUserBookedEvent(int userId, int eventId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM tickets WHERE user_id = ? AND event_id = ?";
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, eventId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
 }

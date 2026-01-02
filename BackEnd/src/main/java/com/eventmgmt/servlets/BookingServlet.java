@@ -22,16 +22,17 @@ public class BookingServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
+
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.print("{\"error\": \"Unauthorized: Please login\"}");
             return;
         }
 
         User user = (User) session.getAttribute("user");
-        resp.setContentType("application/json");
-        PrintWriter out = resp.getWriter();
-
         try {
             Object tickets;
             if ("ADMIN".equals(user.getRole())) {
@@ -42,15 +43,19 @@ public class BookingServlet extends HttpServlet {
             out.print(gson.toJson(tickets));
         } catch (SQLException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            out.print("{\"error\": \"Database error: " + e.getMessage() + "\"}");
+            out.print("{\"error\": \"Database error: " + e.getMessage().replace("\"", "\\\"") + "\"}");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
+
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.print("{\"error\": \"Unauthorized: Please login\"}");
             return;
         }
 
@@ -58,28 +63,29 @@ public class BookingServlet extends HttpServlet {
         String eventIdStr = req.getParameter("eventId");
         if (eventIdStr == null || eventIdStr.isEmpty()) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().print("{\"error\": \"Missing eventId\"}");
+            out.print("{\"error\": \"Missing eventId\"}");
             return;
         }
-        int eventId = Integer.parseInt(eventIdStr);
 
         try {
+            int eventId = Integer.parseInt(eventIdStr);
+
             if (ticketDAO.hasUserBookedEvent(user.getId(), eventId)) {
                 resp.setStatus(HttpServletResponse.SC_CONFLICT);
-                resp.getWriter().print("{\"error\": \"You have already booked this event\"}");
+                out.print("{\"error\": \"You have already booked this event\"}");
                 return;
             }
 
             Event event = eventDAO.getEventById(eventId);
             if (event == null) {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                resp.getWriter().print("{\"error\": \"Event not found\"}");
+                out.print("{\"error\": \"Event not found\"}");
                 return;
             }
 
             if (event.getCapacity() <= 0) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().print("{\"error\": \"Event is full\"}");
+                out.print("{\"error\": \"Event is full\"}");
                 return;
             }
 
@@ -88,17 +94,21 @@ public class BookingServlet extends HttpServlet {
                 Ticket ticket = new Ticket(ticketId, user.getId(), eventId, null, "BOOKED");
                 if (ticketDAO.bookTicket(ticket)) {
                     resp.setStatus(HttpServletResponse.SC_CREATED);
-                    resp.getWriter()
-                            .print("{\"message\": \"Ticket booked successfully\", \"ticketId\": \"" + ticketId + "\"}");
+                    out.print("{\"message\": \"Ticket booked successfully\", \"ticketId\": \"" + ticketId + "\"}");
                 } else {
                     resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    out.print("{\"error\": \"Failed to create ticket in database\"}");
                 }
             } else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().print("{\"error\": \"Could not book ticket\"}");
+                out.print("{\"error\": \"Could not reduce capacity, maybe event is full\"}");
             }
+        } catch (NumberFormatException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("{\"error\": \"Invalid eventId format\"}");
         } catch (SQLException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"error\": \"Database error: " + e.getMessage() + "\"}");
         }
     }
 }
