@@ -221,3 +221,27 @@ nav {
     background: var(--primary);
     color: white;
 }
+
+
+/* Toast/Alert */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    color: white;
+    z-index: 1000;
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
