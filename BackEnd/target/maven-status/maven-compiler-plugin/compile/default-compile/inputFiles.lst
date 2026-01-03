@@ -1,0 +1,13 @@
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\dao\EventDAO.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\dao\TicketDAO.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\dao\UserDAO.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\filters\CorsFilter.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\models\Event.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\models\Ticket.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\models\TicketDetail.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\models\User.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\servlets\AdminServlet.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\servlets\AuthServlet.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\servlets\BookingServlet.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\servlets\EventServlet.java
+C:\web file\Online Event Managment Project\BackEnd\src\main\java\com\eventmgmt\utils\DBUtils.java

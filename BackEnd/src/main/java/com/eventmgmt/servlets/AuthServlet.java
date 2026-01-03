@@ -67,8 +67,17 @@ public class AuthServlet extends HttpServlet {
                 }
 
                 if (userDAO.registerUser(user)) {
-                    resp.setStatus(HttpServletResponse.SC_CREATED);
-                    out.print("{\"message\": \"User registered successfully\"}");
+                    User registeredUser = userDAO.login(user.getEmail(), user.getPassword());
+                    if (registeredUser != null) {
+                        HttpSession session = req.getSession();
+                        session.setAttribute("user", registeredUser);
+                        resp.setStatus(HttpServletResponse.SC_CREATED);
+                        out.print("{\"message\": \"User registered and logged in successfully\", \"role\": \""
+                                + registeredUser.getRole() + "\"}");
+                    } else {
+                        resp.setStatus(HttpServletResponse.SC_CREATED);
+                        out.print("{\"message\": \"User registered successfully\"}");
+                    }
                 } else {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     out.print("{\"error\": \"Registration failed\"}");

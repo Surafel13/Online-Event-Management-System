@@ -1,0 +1,13 @@
+com\eventmgmt\servlets\EventServlet.class
+com\eventmgmt\models\Ticket.class
+com\eventmgmt\models\TicketDetail.class
+com\eventmgmt\servlets\AuthServlet.class
+com\eventmgmt\utils\DBUtils.class
+com\eventmgmt\dao\TicketDAO.class
+com\eventmgmt\models\Event.class
+com\eventmgmt\dao\EventDAO.class
+com\eventmgmt\dao\UserDAO.class
+com\eventmgmt\servlets\AdminServlet.class
+com\eventmgmt\servlets\BookingServlet.class
+com\eventmgmt\models\User.class
+com\eventmgmt\filters\CorsFilter.class
