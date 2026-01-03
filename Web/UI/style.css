@@ -417,3 +417,39 @@ th {
     width: 100%;
     max-width: 500px;
 }
+
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .ticket-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ticket-card {
+        flex-direction: column;
+    }
+
+    .ticket-main {
+        border-right: none;
+        border-bottom: 2px dashed #cbd5e1;
+    }
+
+    .ticket-main::before,
+    .ticket-main::after {
+        display: none;
+    }
+
+    .ticket-stub {
+        writing-mode: horizontal-tb;
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+}
